@@ -1,6 +1,7 @@
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:whimsy_games_preview_generator/state/root_state.dart';
 import 'package:whimsy_games_preview_generator/util/material_color_generator.dart';
 import 'package:whimsy_games_preview_generator/widget/drop_content.dart';
@@ -15,6 +16,19 @@ class PickerPage extends StatefulWidget {
 }
 
 class _PickerPageState extends State<PickerPage> {
+  final _exportPathController = TextEditingController();
+
+  @override
+  void initState() {
+    _initDocumentsDir();
+    super.initState();
+  }
+
+  void _initDocumentsDir() async {
+    _exportPathController.value =
+        TextEditingValue(text: (await getApplicationDocumentsDirectory()).path);
+  }
+
   @override
   Widget build(BuildContext context) {
     final alertKey = GlobalKey();
@@ -59,7 +73,7 @@ class _PickerPageState extends State<PickerPage> {
             Widget continueButton = TextButton(
               child: const Text("Continue"),
               onPressed: () =>
-                  context.read<RootCubit>().saveFiles(fileName, context),
+                  context.read<RootCubit>().saveFiles(fileName, _exportPathController.text, context),
             );
 
             showDialog(
@@ -105,6 +119,36 @@ class _PickerPageState extends State<PickerPage> {
             child: Stack(
               children: [
                 Image.asset('assets/images/background.png'),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(
+                          right: 10.0,
+                        ),
+                        child: Text(
+                          "Export path:",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            right: 10.0,
+                            left: 10.0,
+                          ),
+                          child: TextField(
+                            style: const TextStyle(color: Colors.white),
+                            controller: _exportPathController,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.only(top: 120.0),
                   child: Column(
@@ -187,7 +231,7 @@ class _PickerPageState extends State<PickerPage> {
                           children: [
                             MaterialButton(
                               onPressed: () =>
-                                  context.read<RootCubit>().tryToExportFile(),
+                                  context.read<RootCubit>().tryToExportFile(_exportPathController.text),
                               color: MaterialColorGenerator.from(Colors.black),
                               textColor: Colors.white,
                               child: const Padding(

@@ -44,7 +44,7 @@ class RootCubit extends Cubit<RootState> {
     }
   }
 
-  void setFile2(XFile? file){
+  void setFile2(XFile? file) {
     if (!(file?.name.split('.').last.toLowerCase().contains('png') ?? false)) {
       emit(state.copyWith(
           showSnackBar: true,
@@ -189,13 +189,21 @@ class RootCubit extends Cubit<RootState> {
       title: 'Save to folder',
       context: context,
       requestPermission: () => Permission.storage.status.isGranted,
-      rootDirectory: (await getExternalStorageDirectories())?.first ,
+      rootDirectory: (await getExternalStorageDirectories())?.first,
       fsType: FilesystemType.folder,
       pickText: 'Save file to this folder',
     );
   }
 
-  void tryToExportFile() {
+  void tryToExportFile(String path) {
+    if (path.isEmpty || !Directory(path).existsSync()) {
+      emit(state.copyWith(
+          showSnackBar: true,
+          showSnackBarMsg:
+              'Incorrect export path.'));
+      Future.delayed(const Duration(seconds: 2), () => hideSnackbar());
+      return;
+    }
     if (state.image1?.bytes != null &&
         state.image2?.bytes != null &&
         state.image3?.bytes != null &&
@@ -212,12 +220,11 @@ class RootCubit extends Cubit<RootState> {
     }
   }
 
-  void saveFiles(String fileName, BuildContext context) async {
+  void saveFiles(String fileName, String path, BuildContext context) async {
     if (fileName.isNotEmpty) {
       emit(state.copyWith(
           showSnackBar: false, showSnackBarMsg: '', showExportProgress: true));
       rootBundle.load('assets/images/background.png').then((background) async {
-        final path = null;//await pickFolder(context);
         final result = await util.mergeFinalImage(
             fileName,
             path,
@@ -236,11 +243,7 @@ class RootCubit extends Cubit<RootState> {
             finishExporting: true));
         Future.delayed(const Duration(seconds: 1), () async {
           emit(RootState());
-          if (path != null) {
-            launchUrl(File(path).uri);
-          } else {
-            launchUrl((await getApplicationDocumentsDirectory()).uri);
-          }
+          launchUrl(File(path).uri);
           launchUrl(result);
         });
       });
