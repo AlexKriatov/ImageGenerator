@@ -9,7 +9,7 @@ class ImageCropUtil {
   Uint8List prepare(Uint8List rawImage) {
     final image = img.PngDecoder().decode(rawImage);
     final crop = img.trim(image!, mode: TrimMode.transparent, sides: Trim.all);
-    final result = img.copyResize(crop, height: 380);
+    final result = img.copyResize(crop, height: 380, width: 380, maintainAspect: true);
     return img.encodePng(result);
   }
 
@@ -36,8 +36,11 @@ class ImageCropUtil {
           ..compositeImage(Command()..decodePng(image6), dstX: 860, dstY: 700)
           ..compositeImage(Command()..decodePng(image7), dstX: 1380, dstY: 700)
           ..compositeImage(Command()..decodePng(image8), dstX: 1900, dstY: 700)
-          ..encodeJpgFile('${filePath ?? directory.path}${Platform.pathSeparator}$fileName.jpg'))
+          ..encodeJpgFile(
+              '${filePath ?? directory.path}${Platform.pathSeparator}$fileName.jpg'))
         .executeThread()
-        .then((value) => File('${filePath ?? directory.path}${Platform.pathSeparator}$fileName.jpg').uri);
+        .then((value) => File(
+                '${filePath ?? directory.path}${Platform.pathSeparator}$fileName.jpg')
+            .uri);
   }
 }

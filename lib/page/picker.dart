@@ -5,6 +5,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:whimsy_games_preview_generator/state/root_state.dart';
 import 'package:whimsy_games_preview_generator/util/material_color_generator.dart';
 import 'package:whimsy_games_preview_generator/widget/drop_content.dart';
+import 'package:whimsy_games_preview_generator/widget/export_file_alert_widget.dart';
+import 'package:whimsy_games_preview_generator/widget/import_directory_alert_widget.dart';
 
 import '../state/root_cubit.dart';
 
@@ -31,14 +33,23 @@ class _PickerPageState extends State<PickerPage> {
 
   @override
   Widget build(BuildContext context) {
-    final alertKey = GlobalKey();
+    final exportAlertKey = GlobalKey();
+    final importAlertKey = GlobalKey();
     return BlocConsumer<RootCubit, RootState>(listenWhen: (context, state) {
       return state.showSnackBar == true ||
           state.showSnackBar == false ||
-          state.finishExporting == true;
+          state.finishExporting == true ||
+          state.finishImporting == true;
     }, listener: (context, state) {
       if (state.finishExporting) {
-        Navigator.of(alertKey.currentContext!).pop();
+        if(exportAlertKey.currentContext != null){
+          Navigator.of(exportAlertKey.currentContext!).pop();
+        }
+      }
+      if (state.finishImporting) {
+        if(importAlertKey.currentContext != null){
+          Navigator.of(importAlertKey.currentContext!).pop();
+        }
       }
       if (state.showSnackBar) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -53,67 +64,12 @@ class _PickerPageState extends State<PickerPage> {
         ));
       }
     }, builder: (context, state) {
-      return BlocConsumer<RootCubit, RootState>(
-        listenWhen: (context, state) {
-          return state.showExportAlert == true;
-        },
-        listener: (context, state) {
-          if (state.showExportAlert && alertKey.currentWidget == null) {
-            String fileName = '';
-            Widget textField = TextField(onChanged: (value) {
-              fileName = value;
-            });
-            Widget cancelButton = TextButton(
-              child: const Text("Cancel"),
-              onPressed: () {
-                context.read<RootCubit>().hideAlert();
-                Navigator.of(context).pop();
-              },
-            );
-            Widget continueButton = TextButton(
-              child: const Text("Continue"),
-              onPressed: () =>
-                  context.read<RootCubit>().saveFiles(fileName, _exportPathController.text, context),
-            );
-
-            showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (BuildContext context) {
-                  return BlocBuilder<RootCubit, RootState>(
-                      builder: (context, state) {
-                    return AlertDialog(
-                      key: alertKey,
-                      title: Text(state.showExportProgress
-                          ? "Exporting"
-                          : "Enter file name"),
-                      content: state.showExportProgress
-                          ? Container(
-                              width: 40,
-                              height: 40,
-                              margin: const EdgeInsets.all(5),
-                              child: const Center(
-                                child: SizedBox(
-                                  height: 30,
-                                  width: 30,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2.0,
-                                  ),
-                                ),
-                              ),
-                            )
-                          : textField,
-                      actions: [
-                        if (!state.showExportProgress) cancelButton,
-                        if (!state.showExportProgress) continueButton,
-                      ],
-                    );
-                  });
-                });
-          }
-        },
-        builder: (context, state) {
-          return Container(
+      return ExportDirectoryAlertWidget(
+        exportAlertKey: exportAlertKey,
+        exportPathController: _exportPathController,
+        child: ImportDirectoryAlertWidget(
+          importAlertKey: importAlertKey,
+          child: Container(
             constraints: const BoxConstraints(
                 minWidth: 1024, maxWidth: 1024, minHeight: 768, maxHeight: 768),
             child: Stack(
@@ -231,7 +187,29 @@ class _PickerPageState extends State<PickerPage> {
                           children: [
                             MaterialButton(
                               onPressed: () =>
-                                  context.read<RootCubit>().tryToExportFile(_exportPathController.text),
+                                  context.read<RootCubit>().clearAllImages(),
+                              color: MaterialColorGenerator.from(Colors.black),
+                              textColor: Colors.white,
+                              child: const Padding(
+                                padding: EdgeInsets.all(16.0),
+                                child: Text('Clear all'),
+                              ),
+                            ),
+                            MaterialButton(
+                              onPressed: () => context
+                                  .read<RootCubit>()
+                                  .showImportDirectoryDialog(),
+                              color: MaterialColorGenerator.from(Colors.black),
+                              textColor: Colors.white,
+                              child: const Padding(
+                                padding: EdgeInsets.all(16.0),
+                                child: Text('Import directory'),
+                              ),
+                            ),
+                            MaterialButton(
+                              onPressed: () => context
+                                  .read<RootCubit>()
+                                  .tryToExportFile(_exportPathController.text),
                               color: MaterialColorGenerator.from(Colors.black),
                               textColor: Colors.white,
                               child: const Padding(
@@ -247,8 +225,8 @@ class _PickerPageState extends State<PickerPage> {
                 ),
               ],
             ),
-          );
-        },
+          ),
+        ),
       );
     });
   }

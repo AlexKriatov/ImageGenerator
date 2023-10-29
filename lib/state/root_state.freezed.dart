@@ -26,6 +26,9 @@ mixin _$RootState {
   ImageFile? get image8 => throw _privateConstructorUsedError;
   bool get showExportAlert => throw _privateConstructorUsedError;
   bool get showExportProgress => throw _privateConstructorUsedError;
+  bool get showImportDirectoryAlert => throw _privateConstructorUsedError;
+  bool get showImportDirectoryProgress => throw _privateConstructorUsedError;
+  bool get finishImporting => throw _privateConstructorUsedError;
   bool get showSnackBar => throw _privateConstructorUsedError;
   bool get finishExporting => throw _privateConstructorUsedError;
   String get showSnackBarMsg => throw _privateConstructorUsedError;
@@ -51,6 +54,9 @@ abstract class $RootStateCopyWith<$Res> {
       ImageFile? image8,
       bool showExportAlert,
       bool showExportProgress,
+      bool showImportDirectoryAlert,
+      bool showImportDirectoryProgress,
+      bool finishImporting,
       bool showSnackBar,
       bool finishExporting,
       String showSnackBarMsg});
@@ -79,6 +85,9 @@ class _$RootStateCopyWithImpl<$Res, $Val extends RootState>
     Object? image8 = freezed,
     Object? showExportAlert = null,
     Object? showExportProgress = null,
+    Object? showImportDirectoryAlert = null,
+    Object? showImportDirectoryProgress = null,
+    Object? finishImporting = null,
     Object? showSnackBar = null,
     Object? finishExporting = null,
     Object? showSnackBarMsg = null,
@@ -124,6 +133,18 @@ class _$RootStateCopyWithImpl<$Res, $Val extends RootState>
           ? _value.showExportProgress
           : showExportProgress // ignore: cast_nullable_to_non_nullable
               as bool,
+      showImportDirectoryAlert: null == showImportDirectoryAlert
+          ? _value.showImportDirectoryAlert
+          : showImportDirectoryAlert // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showImportDirectoryProgress: null == showImportDirectoryProgress
+          ? _value.showImportDirectoryProgress
+          : showImportDirectoryProgress // ignore: cast_nullable_to_non_nullable
+              as bool,
+      finishImporting: null == finishImporting
+          ? _value.finishImporting
+          : finishImporting // ignore: cast_nullable_to_non_nullable
+              as bool,
       showSnackBar: null == showSnackBar
           ? _value.showSnackBar
           : showSnackBar // ignore: cast_nullable_to_non_nullable
@@ -159,6 +180,9 @@ abstract class _$$RootStateImplCopyWith<$Res>
       ImageFile? image8,
       bool showExportAlert,
       bool showExportProgress,
+      bool showImportDirectoryAlert,
+      bool showImportDirectoryProgress,
+      bool finishImporting,
       bool showSnackBar,
       bool finishExporting,
       String showSnackBarMsg});
@@ -185,6 +209,9 @@ class __$$RootStateImplCopyWithImpl<$Res>
     Object? image8 = freezed,
     Object? showExportAlert = null,
     Object? showExportProgress = null,
+    Object? showImportDirectoryAlert = null,
+    Object? showImportDirectoryProgress = null,
+    Object? finishImporting = null,
     Object? showSnackBar = null,
     Object? finishExporting = null,
     Object? showSnackBarMsg = null,
@@ -230,6 +257,18 @@ class __$$RootStateImplCopyWithImpl<$Res>
           ? _value.showExportProgress
           : showExportProgress // ignore: cast_nullable_to_non_nullable
               as bool,
+      showImportDirectoryAlert: null == showImportDirectoryAlert
+          ? _value.showImportDirectoryAlert
+          : showImportDirectoryAlert // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showImportDirectoryProgress: null == showImportDirectoryProgress
+          ? _value.showImportDirectoryProgress
+          : showImportDirectoryProgress // ignore: cast_nullable_to_non_nullable
+              as bool,
+      finishImporting: null == finishImporting
+          ? _value.finishImporting
+          : finishImporting // ignore: cast_nullable_to_non_nullable
+              as bool,
       showSnackBar: null == showSnackBar
           ? _value.showSnackBar
           : showSnackBar // ignore: cast_nullable_to_non_nullable
@@ -260,6 +299,9 @@ class _$RootStateImpl implements _RootState {
       this.image8 = null,
       this.showExportAlert = false,
       this.showExportProgress = false,
+      this.showImportDirectoryAlert = false,
+      this.showImportDirectoryProgress = false,
+      this.finishImporting = false,
       this.showSnackBar = false,
       this.finishExporting = false,
       this.showSnackBarMsg = ''});
@@ -296,6 +338,15 @@ class _$RootStateImpl implements _RootState {
   final bool showExportProgress;
   @override
   @JsonKey()
+  final bool showImportDirectoryAlert;
+  @override
+  @JsonKey()
+  final bool showImportDirectoryProgress;
+  @override
+  @JsonKey()
+  final bool finishImporting;
+  @override
+  @JsonKey()
   final bool showSnackBar;
   @override
   @JsonKey()
@@ -306,7 +357,7 @@ class _$RootStateImpl implements _RootState {
 
   @override
   String toString() {
-    return 'RootState(image1: $image1, image2: $image2, image3: $image3, image4: $image4, image5: $image5, image6: $image6, image7: $image7, image8: $image8, showExportAlert: $showExportAlert, showExportProgress: $showExportProgress, showSnackBar: $showSnackBar, finishExporting: $finishExporting, showSnackBarMsg: $showSnackBarMsg)';
+    return 'RootState(image1: $image1, image2: $image2, image3: $image3, image4: $image4, image5: $image5, image6: $image6, image7: $image7, image8: $image8, showExportAlert: $showExportAlert, showExportProgress: $showExportProgress, showImportDirectoryAlert: $showImportDirectoryAlert, showImportDirectoryProgress: $showImportDirectoryProgress, finishImporting: $finishImporting, showSnackBar: $showSnackBar, finishExporting: $finishExporting, showSnackBarMsg: $showSnackBarMsg)';
   }
 
   @override
@@ -326,6 +377,15 @@ class _$RootStateImpl implements _RootState {
                 other.showExportAlert == showExportAlert) &&
             (identical(other.showExportProgress, showExportProgress) ||
                 other.showExportProgress == showExportProgress) &&
+            (identical(
+                    other.showImportDirectoryAlert, showImportDirectoryAlert) ||
+                other.showImportDirectoryAlert == showImportDirectoryAlert) &&
+            (identical(other.showImportDirectoryProgress,
+                    showImportDirectoryProgress) ||
+                other.showImportDirectoryProgress ==
+                    showImportDirectoryProgress) &&
+            (identical(other.finishImporting, finishImporting) ||
+                other.finishImporting == finishImporting) &&
             (identical(other.showSnackBar, showSnackBar) ||
                 other.showSnackBar == showSnackBar) &&
             (identical(other.finishExporting, finishExporting) ||
@@ -347,6 +407,9 @@ class _$RootStateImpl implements _RootState {
       image8,
       showExportAlert,
       showExportProgress,
+      showImportDirectoryAlert,
+      showImportDirectoryProgress,
+      finishImporting,
       showSnackBar,
       finishExporting,
       showSnackBarMsg);
@@ -370,6 +433,9 @@ abstract class _RootState implements RootState {
       final ImageFile? image8,
       final bool showExportAlert,
       final bool showExportProgress,
+      final bool showImportDirectoryAlert,
+      final bool showImportDirectoryProgress,
+      final bool finishImporting,
       final bool showSnackBar,
       final bool finishExporting,
       final String showSnackBarMsg}) = _$RootStateImpl;
@@ -394,6 +460,12 @@ abstract class _RootState implements RootState {
   bool get showExportAlert;
   @override
   bool get showExportProgress;
+  @override
+  bool get showImportDirectoryAlert;
+  @override
+  bool get showImportDirectoryProgress;
+  @override
+  bool get finishImporting;
   @override
   bool get showSnackBar;
   @override

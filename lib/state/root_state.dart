@@ -16,6 +16,9 @@ class RootState with _$RootState {
       @Default(null) ImageFile? image8,
       @Default(false) bool showExportAlert,
       @Default(false) bool showExportProgress,
+      @Default(false) bool showImportDirectoryAlert,
+      @Default(false) bool showImportDirectoryProgress,
+      @Default(false) bool finishImporting,
       @Default(false) bool showSnackBar,
       @Default(false) bool finishExporting,
       @Default('') String showSnackBarMsg}) = _RootState;
