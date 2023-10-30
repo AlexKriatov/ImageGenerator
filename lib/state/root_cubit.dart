@@ -12,8 +12,6 @@ import 'package:whimsy_games_preview_generator/model/preview_file.dart';
 import 'package:whimsy_games_preview_generator/state/root_state.dart';
 import 'package:whimsy_games_preview_generator/util/image_crop_util.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:filesystem_picker/filesystem_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class RootCubit extends Cubit<RootState> {
   RootCubit() : super(RootState());

@@ -4,9 +4,12 @@ import 'package:whimsy_games_preview_generator/page/picker.dart';
 import 'package:whimsy_games_preview_generator/state/root_cubit.dart';
 import 'util/material_color_generator.dart';
 import 'package:desktop_window/desktop_window.dart';
+import 'package:window_manager/window_manager.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await windowManager.ensureInitialized();
+  windowManager.setResizable(false);
   runApp(
     BlocProvider(
       create: (context) => RootCubit(),
