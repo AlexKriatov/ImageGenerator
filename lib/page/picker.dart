@@ -7,6 +7,7 @@ import 'package:whimsy_games_preview_generator/util/material_color_generator.dar
 import 'package:whimsy_games_preview_generator/widget/drop_content.dart';
 import 'package:whimsy_games_preview_generator/widget/export_file_alert_widget.dart';
 import 'package:whimsy_games_preview_generator/widget/import_directory_alert_widget.dart';
+import 'package:file_selector/file_selector.dart';
 
 import '../state/root_cubit.dart';
 
@@ -125,6 +126,20 @@ class _PickerPageState extends State<PickerPage> {
                           ),
                         ),
                       ),
+                      MaterialButton(
+                          color: MaterialColorGenerator.from(Colors.black),
+                          textColor: Colors.white,
+                          child: const Padding(
+                            padding: EdgeInsets.all(16),
+                            child: Text('Choose'),
+                          ),
+                          onPressed: () async {
+                            final path = await getDirectoryPath();
+                            if (path != null) {
+                              _exportPathController.value =
+                                  TextEditingValue(text: path);
+                            }
+                          })
                     ],
                   ),
                 ),

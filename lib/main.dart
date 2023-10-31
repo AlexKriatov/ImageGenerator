@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whimsy_games_preview_generator/page/picker.dart';
 import 'package:whimsy_games_preview_generator/state/root_cubit.dart';
 import 'util/material_color_generator.dart';
-import 'package:desktop_window/desktop_window.dart';
 import 'package:window_manager/window_manager.dart';
 
 void main() async {
@@ -24,11 +23,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Whimsy Games preview generator',
+      title: 'Whimsy Games Art Report Generator',
       theme: ThemeData(
         primarySwatch: MaterialColorGenerator.from(Colors.black),
       ),
-      home: const MyHomePage(title: 'Whimsy Games preview generator'),
+      home: const MyHomePage(title: 'Whimsy Games Art Report Generator'),
     );
   }
 }
@@ -41,27 +40,17 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
+class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    _invalidateWindowSize();
-  }
-
-  @override
-  void didChangeDependencies() {
-    _invalidateWindowSize();
-    super.didChangeDependencies();
-  }
-
-  @override
-  void didUpdateWidget(covariant MyHomePage oldWidget) {
-    _invalidateWindowSize();
-    super.didUpdateWidget(oldWidget);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _invalidateWindowSize();
+    });
   }
 
   Future _invalidateWindowSize() async {
-    var size = await DesktopWindow.getWindowSize();
+    var size = await WindowManager.instance.getSize();
     setState(() {
       if (size.width != 1024 || size.height != 660) {
         _initWindowSize();
@@ -70,8 +59,11 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   }
 
   void _initWindowSize() async {
-    await DesktopWindow.setMaxWindowSize(const Size(1024, 660));
-    await DesktopWindow.setMinWindowSize(const Size(1024, 660));
+    WindowManager.instance.setMaximizable(false);
+    WindowManager.instance.setMaximumSize(const Size(1024, 660));
+    WindowManager.instance.setMinimumSize(const Size(1024, 660));
+    WindowManager.instance.setSize(const Size(1024, 660));
+    print('after invalidate window size');
   }
 
   @override
