@@ -2,14 +2,14 @@ import 'package:desktop_drop/desktop_drop.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:whimsy_games_preview_generator/state/root_state.dart';
+import 'package:whimsy_games_preview_generator/state/eight_elements/root_cubit.dart';
+import 'package:whimsy_games_preview_generator/state/eight_elements/root_state.dart';
 import 'package:whimsy_games_preview_generator/util/material_color_generator.dart';
+import 'package:whimsy_games_preview_generator/util/platform_util.dart';
 import 'package:whimsy_games_preview_generator/widget/drop_content.dart';
 import 'package:whimsy_games_preview_generator/widget/export_file_alert_widget.dart';
 import 'package:whimsy_games_preview_generator/widget/import_directory_alert_widget.dart';
 import 'package:file_selector/file_selector.dart';
-
-import '../state/root_cubit.dart';
 
 class PickerPage extends StatefulWidget {
   const PickerPage({super.key});
@@ -34,14 +34,15 @@ class _PickerPageState extends State<PickerPage> {
   void _loadPrefsAndSetPath(BuildContext context) {
     try {
       if (!_isTextControllerInitialized) {
-        _isTextControllerInitialized = true;
         _initDocumentsDir(
             context.read<RootCubit>().prefs.getString('exportPath'));
         _initExportFileName(
             context.read<RootCubit>().prefs.getString('exportName'));
+        _isTextControllerInitialized = true;
       }
     } catch (e) {
-      print(e);
+      Future.delayed(const Duration(seconds: 1), () => _loadPrefsAndSetPath(context));
+      return;
     }
   }
 
@@ -123,6 +124,7 @@ class _PickerPageState extends State<PickerPage> {
                           child: TextField(
                             style: const TextStyle(color: Colors.white),
                             controller: _exportPathController,
+                            enabled: isWindows(),
                           ),
                         ),
                       ),

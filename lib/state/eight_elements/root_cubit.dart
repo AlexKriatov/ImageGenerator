@@ -1,16 +1,15 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
-
 import 'package:cross_file/cross_file.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:whimsy_games_preview_generator/model/preview_file.dart';
-import 'package:whimsy_games_preview_generator/state/extensions.dart';
-import 'package:whimsy_games_preview_generator/state/root_state.dart';
-import 'package:whimsy_games_preview_generator/state/root_state_isolate.dart';
+import 'package:whimsy_games_preview_generator/state/eight_elements/extensions.dart';
+import 'package:whimsy_games_preview_generator/state/eight_elements/root_state.dart';
+import 'package:whimsy_games_preview_generator/state/eight_elements/root_state_isolate.dart';
 import 'package:whimsy_games_preview_generator/util/image_crop_util.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:whimsy_games_preview_generator/util/io_util.dart';
@@ -238,9 +237,10 @@ class RootCubit extends Cubit<RootState> {
 
 // Private api
 
-
   void _initPrefs() async {
     prefs = await SharedPreferences.getInstance();
+    print(prefs.getString('exportName'));
+    print(prefs.getString('exportPath'));
   }
 
   bool _isFileCorrect(XFile? file) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:whimsy_games_preview_generator/page/picker.dart';
-import 'package:whimsy_games_preview_generator/state/root_cubit.dart';
+import 'package:whimsy_games_preview_generator/page/eight_elements/eight_elements_picker.dart';
+import 'package:whimsy_games_preview_generator/state/eight_elements/root_cubit.dart';
 import 'util/material_color_generator.dart';
 import 'package:window_manager/window_manager.dart';
 

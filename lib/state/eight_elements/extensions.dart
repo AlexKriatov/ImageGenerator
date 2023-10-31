@@ -1,5 +1,5 @@
 import 'package:whimsy_games_preview_generator/model/preview_file.dart';
-import 'package:whimsy_games_preview_generator/state/root_state.dart';
+import 'package:whimsy_games_preview_generator/state/eight_elements/root_state.dart';
 import 'package:whimsy_games_preview_generator/util/io_util.dart';
 
 extension RootStateExt on RootState {
