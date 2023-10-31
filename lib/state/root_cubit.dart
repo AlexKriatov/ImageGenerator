@@ -8,13 +8,23 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image/image.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:whimsy_games_preview_generator/model/preview_file.dart';
 import 'package:whimsy_games_preview_generator/state/root_state.dart';
 import 'package:whimsy_games_preview_generator/util/image_crop_util.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class RootCubit extends Cubit<RootState> {
-  RootCubit() : super(RootState());
+  late final SharedPreferences prefs;
+
+  RootCubit() : super(RootState()) {
+    _initPrefs();
+  }
+
+  void _initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+  }
+
   final ImageCropUtil util = ImageCropUtil();
 
   void hideSnackbar() {
@@ -217,8 +227,14 @@ class RootCubit extends Cubit<RootState> {
   }
 
   void tryImportDirectory(List<XFile> dir) async {
-    if (dir.isEmpty) {
-      print('dir is empty');
+    if (dir.isEmpty || !_checkIsDirectory(dir)) {
+      emit(state.copyWith(
+          showSnackBar: true,
+          showSnackBarMsg: 'File is not a directory.'));
+      Future.delayed(const Duration(seconds: 2), () => hideSnackbar());
+      return;
+    }
+    if (_checkIsDirectoryEmpty(dir)) {
       emit(state.copyWith(
           showSnackBar: true,
           showSnackBarMsg: 'Directory shouldn\'t be empty.'));
@@ -229,6 +245,33 @@ class RootCubit extends Cubit<RootState> {
     _importDirectory(dir);
   }
 
+  bool _checkIsDirectory(List<XFile> dir) {
+    try {
+      Directory.fromUri(Uri.file(dir.first.path, windows: true)).listSync();
+    } catch (e) {
+      print(e);
+      return false;
+    }
+    return true;
+  }
+
+  bool _checkIsDirectoryEmpty(List<XFile> dir) {
+    final list =
+        Directory.fromUri(Uri.file(dir.first.path, windows: true)).listSync();
+    return list.isEmpty;
+  }
+
+  Future<ImageFile?> _loadFromCache(String tempDir, int number) async {
+    try {
+      return ImageFile(
+          await readFile('$tempDir${Platform.pathSeparator}$number.png'),
+          '$number.png',
+          false);}
+    catch(e){
+      return null;
+    }
+  }
+
   void _importDirectory(List<XFile> dir) async {
     emit(state.copyWith(
         showImportDirectoryProgress: true,
@@ -237,7 +280,7 @@ class RootCubit extends Cubit<RootState> {
     final Completer completer = Completer();
     final appDir = await getTemporaryDirectory();
     final tempDir =
-        '${appDir.path}${Platform.pathSeparator}${DateTime.now().millisecondsSinceEpoch}';
+        '${appDir.path}${Platform.pathSeparator}WhimsyGamesReport${Platform.pathSeparator}${DateTime.now().millisecondsSinceEpoch}';
     await Future.delayed(const Duration(seconds: 1), () async {
       final dirPath = dir.first.path;
       var mainReceive = ReceivePort();
@@ -256,47 +299,22 @@ class RootCubit extends Cubit<RootState> {
       emit(state.copyWith(
           showImportDirectoryProgress: false,
           showImportDirectoryAlert: false,
-          finishImporting: true));
-
-      await Future.delayed(
-          const Duration(seconds: 1),
-          () async => emit(state.copyWith(
-              image1: ImageFile(
-                  await readFile('$tempDir${Platform.pathSeparator}1.png'),
-                  dir.first.name,
-                  false),
-              image2: ImageFile(
-                  await readFile('$tempDir${Platform.pathSeparator}2.png'),
-                  dir.first.name,
-                  false),
-              image3: ImageFile(
-                  await readFile('$tempDir${Platform.pathSeparator}3.png'),
-                  dir.first.name,
-                  false),
-              image4: ImageFile(
-                  await readFile('$tempDir${Platform.pathSeparator}4.png'),
-                  dir.first.name,
-                  false),
-              image5: ImageFile(
-                  await readFile('$tempDir${Platform.pathSeparator}5.png'),
-                  dir.first.name,
-                  false),
-              image6: ImageFile(
-                  await readFile('$tempDir${Platform.pathSeparator}6.png'),
-                  dir.first.name,
-                  false),
-              image7: ImageFile(
-                  await readFile('$tempDir${Platform.pathSeparator}7.png'),
-                  dir.first.name,
-                  false),
-              image8: ImageFile(
-                  await readFile('$tempDir${Platform.pathSeparator}8.png'),
-                  dir.first.name,
-                  false),
-              finishImporting: false,
-              showSnackBar: false,
-              showSnackBarMsg: '')));
-    }).then((value) => Directory(tempDir).deleteSync(recursive: true));
+          finishImporting: true,
+          image1: await _loadFromCache(tempDir, 1),
+          image2: await _loadFromCache(tempDir, 2),
+          image3: await _loadFromCache(tempDir, 3),
+          image4: await _loadFromCache(tempDir, 4),
+          image5: await _loadFromCache(tempDir, 5),
+          image6: await _loadFromCache(tempDir, 6),
+          image7: await _loadFromCache(tempDir, 7),
+          image8: await _loadFromCache(tempDir, 8),
+          showSnackBar: false,
+          showSnackBarMsg: ''));
+      Directory(tempDir).deleteSync(recursive: true);
+      emit(state.copyWith(
+        finishImporting: false,
+      ));
+    });
   }
 
   void tryToExportFile(String path) {
@@ -327,6 +345,8 @@ class RootCubit extends Cubit<RootState> {
     if (fileName.isNotEmpty) {
       emit(state.copyWith(
           showSnackBar: false, showSnackBarMsg: '', showExportProgress: true));
+      prefs.setString('exportPath', path);
+      prefs.setString('exportName', fileName);
       rootBundle.load('assets/images/background.png').then((background) async {
         final result = await util.mergeFinalImage(
             fileName,
@@ -388,40 +408,43 @@ void _loadDir(List<Object> args) async {
   print('===isolate');
   final sendPort = args[0] as SendPort;
   final path = args[1] as String;
-  final tempDir = Directory(args[2] as String).path;
-  final directory = Directory.fromUri(Uri.parse(path));
+  final tempDir =
+      Directory.fromUri(Uri.directory((args[2] as String), windows: true)).path;
+  print(path);
+  print(tempDir);
+  final directory = Directory.fromUri(Uri.directory(path, windows: true));
   for (var element in directory.listSync()) {
     if (element.path.toLowerCase().endsWith('_1.png')) {
       final file1 = await _getFileSilent(element);
-      writeFile('$tempDir${Platform.pathSeparator}1.png', file1!.bytes!);
+      await writeFile('$tempDir${Platform.pathSeparator}1.png', file1!.bytes!);
     }
     if (element.path.toLowerCase().endsWith('_2.png')) {
       final file2 = await _getFileSilent(element);
-      writeFile('$tempDir${Platform.pathSeparator}2.png', file2!.bytes!);
+      await writeFile('$tempDir${Platform.pathSeparator}2.png', file2!.bytes!);
     }
     if (element.path.toLowerCase().endsWith('_3.png')) {
       final file3 = await _getFileSilent(element);
-      writeFile('$tempDir${Platform.pathSeparator}3.png', file3!.bytes!);
+      await writeFile('$tempDir${Platform.pathSeparator}3.png', file3!.bytes!);
     }
     if (element.path.toLowerCase().endsWith('_4.png')) {
       final file4 = await _getFileSilent(element);
-      writeFile('$tempDir${Platform.pathSeparator}4.png', file4!.bytes!);
+      await writeFile('$tempDir${Platform.pathSeparator}4.png', file4!.bytes!);
     }
     if (element.path.toLowerCase().endsWith('_5.png')) {
       final file5 = await _getFileSilent(element);
-      writeFile('$tempDir${Platform.pathSeparator}5.png', file5!.bytes!);
+      await writeFile('$tempDir${Platform.pathSeparator}5.png', file5!.bytes!);
     }
     if (element.path.toLowerCase().endsWith('_6.png')) {
       final file6 = await _getFileSilent(element);
-      writeFile('$tempDir${Platform.pathSeparator}6.png', file6!.bytes!);
+      await writeFile('$tempDir${Platform.pathSeparator}6.png', file6!.bytes!);
     }
     if (element.path.toLowerCase().endsWith('_7.png')) {
       final file7 = await _getFileSilent(element);
-      writeFile('$tempDir${Platform.pathSeparator}7.png', file7!.bytes!);
+      await writeFile('$tempDir${Platform.pathSeparator}7.png', file7!.bytes!);
     }
     if (element.path.toLowerCase().endsWith('_8.png')) {
       final file8 = await _getFileSilent(element);
-      writeFile('$tempDir${Platform.pathSeparator}8.png', file8!.bytes!);
+      await writeFile('$tempDir${Platform.pathSeparator}8.png', file8!.bytes!);
     }
   }
   sendPort.send('done');

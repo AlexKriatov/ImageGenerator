@@ -18,17 +18,39 @@ class PickerPage extends StatefulWidget {
 }
 
 class _PickerPageState extends State<PickerPage> {
+  final _exportNameController = TextEditingController();
   final _exportPathController = TextEditingController();
+  bool _isTextControllerInitialized = false;
 
   @override
   void initState() {
-    _initDocumentsDir();
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _loadPrefsAndSetPath(context);
+    });
   }
 
-  void _initDocumentsDir() async {
-    _exportPathController.value =
-        TextEditingValue(text: (await getApplicationDocumentsDirectory()).path);
+  void _loadPrefsAndSetPath(BuildContext context) {
+    try {
+      if (!_isTextControllerInitialized) {
+        _isTextControllerInitialized = true;
+        _initDocumentsDir(
+            context.read<RootCubit>().prefs.getString('exportPath'));
+        _initExportFileName(
+            context.read<RootCubit>().prefs.getString('exportName'));
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void _initDocumentsDir(String? path) async {
+    _exportPathController.value = TextEditingValue(
+        text: path ?? (await getApplicationDocumentsDirectory()).path);
+  }
+
+  void _initExportFileName(String? name) async {
+    _exportNameController.value = TextEditingValue(text: name ?? '');
   }
 
   @override
@@ -42,12 +64,12 @@ class _PickerPageState extends State<PickerPage> {
           state.finishImporting == true;
     }, listener: (context, state) {
       if (state.finishExporting) {
-        if(exportAlertKey.currentContext != null){
+        if (exportAlertKey.currentContext != null) {
           Navigator.of(exportAlertKey.currentContext!).pop();
         }
       }
       if (state.finishImporting) {
-        if(importAlertKey.currentContext != null){
+        if (importAlertKey.currentContext != null) {
           Navigator.of(importAlertKey.currentContext!).pop();
         }
       }
@@ -66,6 +88,7 @@ class _PickerPageState extends State<PickerPage> {
     }, builder: (context, state) {
       return ExportDirectoryAlertWidget(
         exportAlertKey: exportAlertKey,
+        exportNameController: _exportNameController,
         exportPathController: _exportPathController,
         child: ImportDirectoryAlertWidget(
           importAlertKey: importAlertKey,
@@ -117,29 +140,37 @@ class _PickerPageState extends State<PickerPage> {
                           children: [
                             DropTarget(
                               onDragDone: (detail) {
-                                final file = detail.files.first;
-                                context.read<RootCubit>().setFile1(file);
+                                if (!state.showImportDirectoryAlert) {
+                                  final file = detail.files.first;
+                                  context.read<RootCubit>().setFile1(file);
+                                }
                               },
                               child: DropContentWidget(file: state.image1),
                             ),
                             DropTarget(
                               onDragDone: (detail) {
-                                final file = detail.files.first;
-                                context.read<RootCubit>().setFile2(file);
+                                if (!state.showImportDirectoryAlert) {
+                                  final file = detail.files.first;
+                                  context.read<RootCubit>().setFile2(file);
+                                }
                               },
                               child: DropContentWidget(file: state.image2),
                             ),
                             DropTarget(
                               onDragDone: (detail) {
-                                final file = detail.files.first;
-                                context.read<RootCubit>().setFile3(file);
+                                if (!state.showImportDirectoryAlert) {
+                                  final file = detail.files.first;
+                                  context.read<RootCubit>().setFile3(file);
+                                }
                               },
                               child: DropContentWidget(file: state.image3),
                             ),
                             DropTarget(
                               onDragDone: (detail) {
-                                final file = detail.files.first;
-                                context.read<RootCubit>().setFile4(file);
+                                if (!state.showImportDirectoryAlert) {
+                                  final file = detail.files.first;
+                                  context.read<RootCubit>().setFile4(file);
+                                }
                               },
                               child: DropContentWidget(file: state.image4),
                             ),
@@ -152,29 +183,37 @@ class _PickerPageState extends State<PickerPage> {
                           children: [
                             DropTarget(
                               onDragDone: (detail) {
-                                final file = detail.files.first;
-                                context.read<RootCubit>().setFile5(file);
+                                if (!state.showImportDirectoryAlert) {
+                                  final file = detail.files.first;
+                                  context.read<RootCubit>().setFile5(file);
+                                }
                               },
                               child: DropContentWidget(file: state.image5),
                             ),
                             DropTarget(
                               onDragDone: (detail) {
-                                final file = detail.files.first;
-                                context.read<RootCubit>().setFile6(file);
+                                if (!state.showImportDirectoryAlert) {
+                                  final file = detail.files.first;
+                                  context.read<RootCubit>().setFile6(file);
+                                }
                               },
                               child: DropContentWidget(file: state.image6),
                             ),
                             DropTarget(
                               onDragDone: (detail) {
-                                final file = detail.files.first;
-                                context.read<RootCubit>().setFile7(file);
+                                if (!state.showImportDirectoryAlert) {
+                                  final file = detail.files.first;
+                                  context.read<RootCubit>().setFile7(file);
+                                }
                               },
                               child: DropContentWidget(file: state.image7),
                             ),
                             DropTarget(
                               onDragDone: (detail) {
-                                final file = detail.files.first;
-                                context.read<RootCubit>().setFile8(file);
+                                if (!state.showImportDirectoryAlert) {
+                                  final file = detail.files.first;
+                                  context.read<RootCubit>().setFile8(file);
+                                }
                               },
                               child: DropContentWidget(file: state.image8),
                             ),

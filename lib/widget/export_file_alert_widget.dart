@@ -6,6 +6,7 @@ import 'package:whimsy_games_preview_generator/state/root_state.dart';
 
 class ExportDirectoryAlertWidget extends StatelessWidget {
   final Widget child;
+  final TextEditingController exportNameController;
   final TextEditingController exportPathController;
   final GlobalKey exportAlertKey;
 
@@ -13,6 +14,7 @@ class ExportDirectoryAlertWidget extends StatelessWidget {
       {super.key,
       required this.exportAlertKey,
       required this.child,
+      required this.exportNameController,
       required this.exportPathController});
 
   @override
@@ -21,10 +23,7 @@ class ExportDirectoryAlertWidget extends StatelessWidget {
       return state.showExportAlert == true;
     }, listener: (context, state) {
       if (state.showExportAlert && exportAlertKey.currentWidget == null) {
-        String fileName = '';
-        Widget textField = TextField(onChanged: (value) {
-          fileName = value;
-        });
+        Widget textField = TextField(controller: exportNameController,);
         Widget cancelButton = TextButton(
           child: const Text("Cancel"),
           onPressed: () {
@@ -36,7 +35,7 @@ class ExportDirectoryAlertWidget extends StatelessWidget {
           child: const Text("Continue"),
           onPressed: () => context
               .read<RootCubit>()
-              .saveFiles(fileName, exportPathController.text, context),
+              .saveFiles(exportNameController.text, exportPathController.text, context),
         );
 
         showDialog(
