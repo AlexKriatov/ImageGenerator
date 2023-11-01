@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:whimsy_games_preview_generator/page/eight_elements/eight_elements_picker.dart';
-import 'package:whimsy_games_preview_generator/state/eight_elements/root_cubit.dart';
+import 'package:whimsy_games_preview_generator/page/root_page.dart';
+import 'package:whimsy_games_preview_generator/state/root_cubit.dart';
+import 'package:whimsy_games_preview_generator/state/tab_state.dart';
+import 'package:whimsy_games_preview_generator/util/platform_util.dart';
 import 'util/material_color_generator.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -15,6 +17,13 @@ void main() async {
       child: const MyApp(),
     ),
   );
+}
+
+const Size _windowsSize = Size(1024, 663);
+const Size _macosSize = Size(1024, 660);
+
+Size _platformWindowSize() {
+  return isWindows() ? _windowsSize : _macosSize;
 }
 
 class MyApp extends StatelessWidget {
@@ -50,9 +59,11 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future _invalidateWindowSize() async {
-    var size = await WindowManager.instance.getSize();
+    final size = await WindowManager.instance.getSize();
+    final platformSize = _platformWindowSize();
     setState(() {
-      if (size.width != 1024 || size.height != 660) {
+      if (size.width != platformSize.width ||
+          size.height != platformSize.height) {
         _initWindowSize();
       }
     });
@@ -60,9 +71,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _initWindowSize() async {
     WindowManager.instance.setMaximizable(false);
-    WindowManager.instance.setMaximumSize(const Size(1024, 660));
-    WindowManager.instance.setMinimumSize(const Size(1024, 660));
-    WindowManager.instance.setSize(const Size(1024, 660));
+    WindowManager.instance.setMaximumSize(_platformWindowSize());
+    WindowManager.instance.setMinimumSize(_platformWindowSize());
+    WindowManager.instance.setSize(_platformWindowSize());
     print('after invalidate window size');
   }
 
@@ -71,6 +82,28 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
+          actions: [
+            PopupMenuButton(
+              onSelected: (state) => context.read<RootCubit>().switchTab(state),
+              itemBuilder: (context) => [
+                const PopupMenuItem(
+                value: TabState.two,
+                child: Text('Two'),
+              ),
+                const PopupMenuItem(
+                  value: TabState.four,
+                  child: Text('Four'),
+                ),
+                const PopupMenuItem(
+                  value: TabState.eight,
+                  child: Text('Eight'),
+                ),],
+              child: const Padding(
+                padding: EdgeInsets.all(16),
+                child: Icon(Icons.tune),
+              ),
+            ),
+          ],
         ),
         body: const PickerPage());
   }

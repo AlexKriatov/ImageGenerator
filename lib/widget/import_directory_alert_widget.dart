@@ -2,8 +2,8 @@ import 'package:desktop_drop/desktop_drop.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:whimsy_games_preview_generator/state/eight_elements/root_cubit.dart';
-import 'package:whimsy_games_preview_generator/state/eight_elements/root_state.dart';
+import 'package:whimsy_games_preview_generator/state/root_cubit.dart';
+import 'package:whimsy_games_preview_generator/state/root_state.dart';
 import 'package:whimsy_games_preview_generator/widget/drop_content.dart';
 
 class ImportDirectoryAlertWidget extends StatelessWidget {

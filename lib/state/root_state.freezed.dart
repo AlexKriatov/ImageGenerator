@@ -16,14 +16,11 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$RootState {
-  ImageFile? get image1 => throw _privateConstructorUsedError;
-  ImageFile? get image2 => throw _privateConstructorUsedError;
-  ImageFile? get image3 => throw _privateConstructorUsedError;
-  ImageFile? get image4 => throw _privateConstructorUsedError;
-  ImageFile? get image5 => throw _privateConstructorUsedError;
-  ImageFile? get image6 => throw _privateConstructorUsedError;
-  ImageFile? get image7 => throw _privateConstructorUsedError;
-  ImageFile? get image8 => throw _privateConstructorUsedError;
+  TabState get tabState => throw _privateConstructorUsedError;
+  EightElementsState get eightElementsState =>
+      throw _privateConstructorUsedError;
+  FourElementsState get fourElementsState => throw _privateConstructorUsedError;
+  TwoElementsState get twoElementsState => throw _privateConstructorUsedError;
   bool get showExportAlert => throw _privateConstructorUsedError;
   bool get showExportProgress => throw _privateConstructorUsedError;
   bool get showImportDirectoryAlert => throw _privateConstructorUsedError;
@@ -44,14 +41,10 @@ abstract class $RootStateCopyWith<$Res> {
       _$RootStateCopyWithImpl<$Res, RootState>;
   @useResult
   $Res call(
-      {ImageFile? image1,
-      ImageFile? image2,
-      ImageFile? image3,
-      ImageFile? image4,
-      ImageFile? image5,
-      ImageFile? image6,
-      ImageFile? image7,
-      ImageFile? image8,
+      {TabState tabState,
+      EightElementsState eightElementsState,
+      FourElementsState fourElementsState,
+      TwoElementsState twoElementsState,
       bool showExportAlert,
       bool showExportProgress,
       bool showImportDirectoryAlert,
@@ -60,6 +53,10 @@ abstract class $RootStateCopyWith<$Res> {
       bool showSnackBar,
       bool finishExporting,
       String showSnackBarMsg});
+
+  $EightElementsStateCopyWith<$Res> get eightElementsState;
+  $FourElementsStateCopyWith<$Res> get fourElementsState;
+  $TwoElementsStateCopyWith<$Res> get twoElementsState;
 }
 
 /// @nodoc
@@ -75,14 +72,10 @@ class _$RootStateCopyWithImpl<$Res, $Val extends RootState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? image1 = freezed,
-    Object? image2 = freezed,
-    Object? image3 = freezed,
-    Object? image4 = freezed,
-    Object? image5 = freezed,
-    Object? image6 = freezed,
-    Object? image7 = freezed,
-    Object? image8 = freezed,
+    Object? tabState = null,
+    Object? eightElementsState = null,
+    Object? fourElementsState = null,
+    Object? twoElementsState = null,
     Object? showExportAlert = null,
     Object? showExportProgress = null,
     Object? showImportDirectoryAlert = null,
@@ -93,38 +86,22 @@ class _$RootStateCopyWithImpl<$Res, $Val extends RootState>
     Object? showSnackBarMsg = null,
   }) {
     return _then(_value.copyWith(
-      image1: freezed == image1
-          ? _value.image1
-          : image1 // ignore: cast_nullable_to_non_nullable
-              as ImageFile?,
-      image2: freezed == image2
-          ? _value.image2
-          : image2 // ignore: cast_nullable_to_non_nullable
-              as ImageFile?,
-      image3: freezed == image3
-          ? _value.image3
-          : image3 // ignore: cast_nullable_to_non_nullable
-              as ImageFile?,
-      image4: freezed == image4
-          ? _value.image4
-          : image4 // ignore: cast_nullable_to_non_nullable
-              as ImageFile?,
-      image5: freezed == image5
-          ? _value.image5
-          : image5 // ignore: cast_nullable_to_non_nullable
-              as ImageFile?,
-      image6: freezed == image6
-          ? _value.image6
-          : image6 // ignore: cast_nullable_to_non_nullable
-              as ImageFile?,
-      image7: freezed == image7
-          ? _value.image7
-          : image7 // ignore: cast_nullable_to_non_nullable
-              as ImageFile?,
-      image8: freezed == image8
-          ? _value.image8
-          : image8 // ignore: cast_nullable_to_non_nullable
-              as ImageFile?,
+      tabState: null == tabState
+          ? _value.tabState
+          : tabState // ignore: cast_nullable_to_non_nullable
+              as TabState,
+      eightElementsState: null == eightElementsState
+          ? _value.eightElementsState
+          : eightElementsState // ignore: cast_nullable_to_non_nullable
+              as EightElementsState,
+      fourElementsState: null == fourElementsState
+          ? _value.fourElementsState
+          : fourElementsState // ignore: cast_nullable_to_non_nullable
+              as FourElementsState,
+      twoElementsState: null == twoElementsState
+          ? _value.twoElementsState
+          : twoElementsState // ignore: cast_nullable_to_non_nullable
+              as TwoElementsState,
       showExportAlert: null == showExportAlert
           ? _value.showExportAlert
           : showExportAlert // ignore: cast_nullable_to_non_nullable
@@ -159,6 +136,31 @@ class _$RootStateCopyWithImpl<$Res, $Val extends RootState>
               as String,
     ) as $Val);
   }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $EightElementsStateCopyWith<$Res> get eightElementsState {
+    return $EightElementsStateCopyWith<$Res>(_value.eightElementsState,
+        (value) {
+      return _then(_value.copyWith(eightElementsState: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $FourElementsStateCopyWith<$Res> get fourElementsState {
+    return $FourElementsStateCopyWith<$Res>(_value.fourElementsState, (value) {
+      return _then(_value.copyWith(fourElementsState: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $TwoElementsStateCopyWith<$Res> get twoElementsState {
+    return $TwoElementsStateCopyWith<$Res>(_value.twoElementsState, (value) {
+      return _then(_value.copyWith(twoElementsState: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -170,14 +172,10 @@ abstract class _$$RootStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {ImageFile? image1,
-      ImageFile? image2,
-      ImageFile? image3,
-      ImageFile? image4,
-      ImageFile? image5,
-      ImageFile? image6,
-      ImageFile? image7,
-      ImageFile? image8,
+      {TabState tabState,
+      EightElementsState eightElementsState,
+      FourElementsState fourElementsState,
+      TwoElementsState twoElementsState,
       bool showExportAlert,
       bool showExportProgress,
       bool showImportDirectoryAlert,
@@ -186,6 +184,13 @@ abstract class _$$RootStateImplCopyWith<$Res>
       bool showSnackBar,
       bool finishExporting,
       String showSnackBarMsg});
+
+  @override
+  $EightElementsStateCopyWith<$Res> get eightElementsState;
+  @override
+  $FourElementsStateCopyWith<$Res> get fourElementsState;
+  @override
+  $TwoElementsStateCopyWith<$Res> get twoElementsState;
 }
 
 /// @nodoc
@@ -199,14 +204,10 @@ class __$$RootStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? image1 = freezed,
-    Object? image2 = freezed,
-    Object? image3 = freezed,
-    Object? image4 = freezed,
-    Object? image5 = freezed,
-    Object? image6 = freezed,
-    Object? image7 = freezed,
-    Object? image8 = freezed,
+    Object? tabState = null,
+    Object? eightElementsState = null,
+    Object? fourElementsState = null,
+    Object? twoElementsState = null,
     Object? showExportAlert = null,
     Object? showExportProgress = null,
     Object? showImportDirectoryAlert = null,
@@ -217,38 +218,22 @@ class __$$RootStateImplCopyWithImpl<$Res>
     Object? showSnackBarMsg = null,
   }) {
     return _then(_$RootStateImpl(
-      image1: freezed == image1
-          ? _value.image1
-          : image1 // ignore: cast_nullable_to_non_nullable
-              as ImageFile?,
-      image2: freezed == image2
-          ? _value.image2
-          : image2 // ignore: cast_nullable_to_non_nullable
-              as ImageFile?,
-      image3: freezed == image3
-          ? _value.image3
-          : image3 // ignore: cast_nullable_to_non_nullable
-              as ImageFile?,
-      image4: freezed == image4
-          ? _value.image4
-          : image4 // ignore: cast_nullable_to_non_nullable
-              as ImageFile?,
-      image5: freezed == image5
-          ? _value.image5
-          : image5 // ignore: cast_nullable_to_non_nullable
-              as ImageFile?,
-      image6: freezed == image6
-          ? _value.image6
-          : image6 // ignore: cast_nullable_to_non_nullable
-              as ImageFile?,
-      image7: freezed == image7
-          ? _value.image7
-          : image7 // ignore: cast_nullable_to_non_nullable
-              as ImageFile?,
-      image8: freezed == image8
-          ? _value.image8
-          : image8 // ignore: cast_nullable_to_non_nullable
-              as ImageFile?,
+      tabState: null == tabState
+          ? _value.tabState
+          : tabState // ignore: cast_nullable_to_non_nullable
+              as TabState,
+      eightElementsState: null == eightElementsState
+          ? _value.eightElementsState
+          : eightElementsState // ignore: cast_nullable_to_non_nullable
+              as EightElementsState,
+      fourElementsState: null == fourElementsState
+          ? _value.fourElementsState
+          : fourElementsState // ignore: cast_nullable_to_non_nullable
+              as FourElementsState,
+      twoElementsState: null == twoElementsState
+          ? _value.twoElementsState
+          : twoElementsState // ignore: cast_nullable_to_non_nullable
+              as TwoElementsState,
       showExportAlert: null == showExportAlert
           ? _value.showExportAlert
           : showExportAlert // ignore: cast_nullable_to_non_nullable
@@ -289,14 +274,10 @@ class __$$RootStateImplCopyWithImpl<$Res>
 
 class _$RootStateImpl implements _RootState {
   _$RootStateImpl(
-      {this.image1 = null,
-      this.image2 = null,
-      this.image3 = null,
-      this.image4 = null,
-      this.image5 = null,
-      this.image6 = null,
-      this.image7 = null,
-      this.image8 = null,
+      {this.tabState = TabState.eight,
+      this.eightElementsState = const EightElementsState(),
+      this.fourElementsState = const FourElementsState(),
+      this.twoElementsState = const TwoElementsState(),
       this.showExportAlert = false,
       this.showExportProgress = false,
       this.showImportDirectoryAlert = false,
@@ -308,28 +289,16 @@ class _$RootStateImpl implements _RootState {
 
   @override
   @JsonKey()
-  final ImageFile? image1;
+  final TabState tabState;
   @override
   @JsonKey()
-  final ImageFile? image2;
+  final EightElementsState eightElementsState;
   @override
   @JsonKey()
-  final ImageFile? image3;
+  final FourElementsState fourElementsState;
   @override
   @JsonKey()
-  final ImageFile? image4;
-  @override
-  @JsonKey()
-  final ImageFile? image5;
-  @override
-  @JsonKey()
-  final ImageFile? image6;
-  @override
-  @JsonKey()
-  final ImageFile? image7;
-  @override
-  @JsonKey()
-  final ImageFile? image8;
+  final TwoElementsState twoElementsState;
   @override
   @JsonKey()
   final bool showExportAlert;
@@ -357,7 +326,7 @@ class _$RootStateImpl implements _RootState {
 
   @override
   String toString() {
-    return 'RootState(image1: $image1, image2: $image2, image3: $image3, image4: $image4, image5: $image5, image6: $image6, image7: $image7, image8: $image8, showExportAlert: $showExportAlert, showExportProgress: $showExportProgress, showImportDirectoryAlert: $showImportDirectoryAlert, showImportDirectoryProgress: $showImportDirectoryProgress, finishImporting: $finishImporting, showSnackBar: $showSnackBar, finishExporting: $finishExporting, showSnackBarMsg: $showSnackBarMsg)';
+    return 'RootState(tabState: $tabState, eightElementsState: $eightElementsState, fourElementsState: $fourElementsState, twoElementsState: $twoElementsState, showExportAlert: $showExportAlert, showExportProgress: $showExportProgress, showImportDirectoryAlert: $showImportDirectoryAlert, showImportDirectoryProgress: $showImportDirectoryProgress, finishImporting: $finishImporting, showSnackBar: $showSnackBar, finishExporting: $finishExporting, showSnackBarMsg: $showSnackBarMsg)';
   }
 
   @override
@@ -365,14 +334,14 @@ class _$RootStateImpl implements _RootState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$RootStateImpl &&
-            (identical(other.image1, image1) || other.image1 == image1) &&
-            (identical(other.image2, image2) || other.image2 == image2) &&
-            (identical(other.image3, image3) || other.image3 == image3) &&
-            (identical(other.image4, image4) || other.image4 == image4) &&
-            (identical(other.image5, image5) || other.image5 == image5) &&
-            (identical(other.image6, image6) || other.image6 == image6) &&
-            (identical(other.image7, image7) || other.image7 == image7) &&
-            (identical(other.image8, image8) || other.image8 == image8) &&
+            (identical(other.tabState, tabState) ||
+                other.tabState == tabState) &&
+            (identical(other.eightElementsState, eightElementsState) ||
+                other.eightElementsState == eightElementsState) &&
+            (identical(other.fourElementsState, fourElementsState) ||
+                other.fourElementsState == fourElementsState) &&
+            (identical(other.twoElementsState, twoElementsState) ||
+                other.twoElementsState == twoElementsState) &&
             (identical(other.showExportAlert, showExportAlert) ||
                 other.showExportAlert == showExportAlert) &&
             (identical(other.showExportProgress, showExportProgress) ||
@@ -397,14 +366,10 @@ class _$RootStateImpl implements _RootState {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      image1,
-      image2,
-      image3,
-      image4,
-      image5,
-      image6,
-      image7,
-      image8,
+      tabState,
+      eightElementsState,
+      fourElementsState,
+      twoElementsState,
       showExportAlert,
       showExportProgress,
       showImportDirectoryAlert,
@@ -423,14 +388,10 @@ class _$RootStateImpl implements _RootState {
 
 abstract class _RootState implements RootState {
   factory _RootState(
-      {final ImageFile? image1,
-      final ImageFile? image2,
-      final ImageFile? image3,
-      final ImageFile? image4,
-      final ImageFile? image5,
-      final ImageFile? image6,
-      final ImageFile? image7,
-      final ImageFile? image8,
+      {final TabState tabState,
+      final EightElementsState eightElementsState,
+      final FourElementsState fourElementsState,
+      final TwoElementsState twoElementsState,
       final bool showExportAlert,
       final bool showExportProgress,
       final bool showImportDirectoryAlert,
@@ -441,21 +402,13 @@ abstract class _RootState implements RootState {
       final String showSnackBarMsg}) = _$RootStateImpl;
 
   @override
-  ImageFile? get image1;
+  TabState get tabState;
   @override
-  ImageFile? get image2;
+  EightElementsState get eightElementsState;
   @override
-  ImageFile? get image3;
+  FourElementsState get fourElementsState;
   @override
-  ImageFile? get image4;
-  @override
-  ImageFile? get image5;
-  @override
-  ImageFile? get image6;
-  @override
-  ImageFile? get image7;
-  @override
-  ImageFile? get image8;
+  TwoElementsState get twoElementsState;
   @override
   bool get showExportAlert;
   @override
